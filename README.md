@@ -1,5 +1,5 @@
 # Primitive abundant numbers
- An abundant number (AN) is a positive integer $N$ such that $\tau(N) > 2 * N$ where $\tau$ is the Ramanujan tau function $$\tau(N) := \sum_{d \mid N} d;$$ whereas, a primitive abundant number (PAN) is an AN, the proper divisors of which are not abundant.
+ An abundant number (AN) is a positive integer $N$ such that $\tau(N) > 2N$ where $\tau$ is defined as $$\tau(N) := \sum_{d \mid N} d.$$ A primitive abundant number (PAN) is an AN, the proper divisors of which are not abundant.
  
  In this repository, we search for and implement algorithms for finding PANs upto some number X.
 
