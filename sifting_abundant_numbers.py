@@ -1,4 +1,5 @@
 import math
+import sys
 
 def sift_PANs_up_to(X):
     P = sieve_of_Eratosthenes(X)
@@ -19,10 +20,11 @@ def sift_PANs_up_to(X):
                 A[n][0] = A[n][0]/(p ** e)
                 A[n][1].add((p, e))
                 if A[n][0] == 1:
-                    if is_abundant(n, A[n][1]):
+                    kind = classify(n, A[n][1])
+                    if kind == 'abundant' or kind == 'perfect':
                         for i in range(2 * n, X + 1, n):
                             pan_bitmap[i] = False
-                    else:
+                    if kind == 'perfect' or kind == 'deficient':
                         pan_bitmap[n] = False
 
     return [i for i in range(X + 1) if pan_bitmap[i]]
@@ -39,16 +41,27 @@ def sieve_of_Eratosthenes(X):
         p += 1
     return [i for i in range(2, X + 1) if primes_bitmap[i]]
 
-def is_abundant(n, prime_factorization):
+def classify(n, prime_factorization):
     assert is_factorization_correct(n, prime_factorization)
-
     tau = 1
     for (p, e) in prime_factorization:
         tau *= (p**(e+1) - 1) / (p - 1)
-    return tau > 2 * n
+    if tau > 2 * n:
+        return 'abundant'
+    elif tau == 2 * n:
+        return 'perfect'
+    else:
+        return 'deficient'
 
 def is_factorization_correct(n, prime_factorization):
     m = 1
     for (p, e) in prime_factorization:
         m *= p ** e
     return n == m
+
+X = int(sys.argv[1])
+pans = sift_PANs_up_to(X)
+file = open('pans_up_to_%s.txt' % X,'w')
+for pan in pans:
+	file.write('%s\n' % pan)
+file.close()
