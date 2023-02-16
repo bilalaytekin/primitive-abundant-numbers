@@ -1,8 +1,10 @@
-import math
 import sys
+from helpers.helper import sieve_of_Eratosthenes
 
-def sift_PANs_up_to(X):
-    P = sieve_of_Eratosthenes(X)
+def PANs_up_to(X, primes=[]):
+    P = primes
+    if P==[]:
+        P = sieve_of_Eratosthenes(X)
 
     # This bitmap starts as false for 0 and 1, true for every 2 <= n <= X.
     pan_bitmap = [i > 1 for i in range(0, X + 1)]
@@ -29,18 +31,6 @@ def sift_PANs_up_to(X):
 
     return [i for i in range(X + 1) if pan_bitmap[i]]
 
-def sieve_of_Eratosthenes(X):
-    # This bitmap starts as false for 0 and 1, true for every 2 <= n <= X.
-    primes_bitmap = [i > 1 for i in range(0, X + 1)]
-
-    p = 2 # the first prime
-    while p <= math.sqrt(X + 1):
-        if primes_bitmap[p]:
-            for i in range(p * p, X + 1, p):
-                primes_bitmap[i] = False
-        p += 1
-    return [i for i in range(2, X + 1) if primes_bitmap[i]]
-
 def classify(n, prime_factorization):
     assert is_factorization_correct(n, prime_factorization)
     tau = 1
@@ -60,7 +50,7 @@ def is_factorization_correct(n, prime_factorization):
     return n == m
 
 X = int(sys.argv[1])
-pans = sift_PANs_up_to(X)
+pans = PANs_up_to(X)
 file = open('pans_up_to_%s.txt' % X,'w')
 for pan in pans:
 	file.write('%s\n' % pan)
